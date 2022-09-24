@@ -8,38 +8,39 @@ CSEN401 Game Project
 
 # Champion attributes:
 
-	•	Type: (Hero/Villain/AntiHero).
-	•	HP: Health Points
-	•	Mana: Used for abilities
-	•	AP: Action points (Used for moving/Doing a normal attack/Casting abilities)
-	•	Speed: The faster the champion the earlier they start their turn.
-	•	AR: Attack Range (Champions can only attack within their attack range [range is calculated using Manhattan distance]).
+	Type: (Hero/Villain/AntiHero).
+	HP: Health Points
+	Mana: Used for abilities
+	AP: Action points (Used for moving/Doing a normal attack/Casting abilities)
+	Speed: The faster the champion the earlier they start their turn.
+	AR: Attack Range (Champions can only attack within their attack range [range is calculated using Manhattan distance]).
 
 # Possible actions per turn:
 
-	•	Move to an empty cell (costs 1 action point).
-	•	Do a normal attack (costs 2 action points).
-	•	Cast an ability (action point cost/mana cost depend on the ability).
-	•	Use Leader Ability (only if champion is the player’s chosen leader).
+	Move to an empty cell (costs 1 action point).
+	Do a normal attack (costs 2 action points).
+	Cast an ability (action point cost/mana cost depend on the ability).
+	Use Leader Ability (only if champion is the player’s chosen leader).
 
 # Attacking:
 
-	•	Heroes: they deal extra damage when attacking villains.
-	•	Villains: they deal extra damage when attacking heroes.
-	•	Anti-Heroes: when being attacked or attacking a hero or villain, the antihero will always act as the opposite type. If attacking an antihero, damage is calculated normally.
+	Heroes: they deal extra damage when attacking villains.
+	Villains: they deal extra damage when attacking heroes.
+	Anti-Heroes: when being attacked or attacking a hero or villain, the antihero will always act as the opposite type. If attacking an antihero, damage is calculated normally.
 
 # Leader Abilities:
 
-	•	Leaders can use their ability once during the entire game.
+	Leaders can use their ability once during the entire game.
 
 # Abilities:
+
 	Each champion has 3 abilities which they can use throughout the game. Abilities can be damaging, healing, or crowd control (applies an effect). Abilities have different action point cost/mana cost/cool down/cast range. Abilities also have different areas of effect (SINGLE TARGET, TEAM TARGET, SELF TARGET, SURROUND, DIRECTIONAL):
 
-	•	SINGLE TARGET: Applies to only one target as long as they are within cast range.
-	•	TEAM TARGET: Applies to the entire team (Current champion’s team if it’s healing or a BUFF effect / Opponent’s team if it’s damaging or a DEBUFF effect).
-	•	SELF TARGET: Applies to champion who is casting the ability.
-	•	SURROUND: Applies to adjacent cells (No friendly fire).
-	•	DIRECTIONAL: Applies to cells in chosen direction as long as they are in cast range (No friendly fire).
+	SINGLE TARGET: Applies to only one target as long as they are within cast range.
+	TEAM TARGET: Applies to the entire team (Current champion’s team if it’s healing or a BUFF effect / Opponent’s team if it’s damaging or a DEBUFF effect).
+	SELF TARGET: Applies to champion who is casting the ability.
+	SURROUND: Applies to adjacent cells (No friendly fire).
+	DIRECTIONAL: Applies to cells in chosen direction as long as they are in cast range (No friendly fire).
 
 # Effects:
 
