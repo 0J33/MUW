@@ -1,5 +1,5 @@
-# MUW
-CSEN401 Game Project (Marvel - Ultimate War)
+# Marvel - Ultimate War
+CSEN401 Game Project
 
 # Gameplay:
 
