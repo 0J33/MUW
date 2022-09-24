@@ -35,7 +35,7 @@ CSEN401 Game Project
 
 # Abilities:
 
-	• Each champion has 3 abilities which they can use throughout the game. Abilities can be damaging, healing, or crowd control (applies an effect). Abilities have different action point cost/mana cost/cool down/cast range. Abilities also have different areas of effect (SINGLE TARGET, TEAM TARGET, SELF TARGET, SURROUND, DIRECTIONAL):
+	Each champion has 3 abilities which they can use throughout the game. Abilities can be damaging, healing, or crowd control (applies an effect). Abilities have different action point cost/mana cost/cool down/cast range. Abilities also have different areas of effect (SINGLE TARGET, TEAM TARGET, SELF TARGET, SURROUND, DIRECTIONAL):
 
 	• SINGLE TARGET: Applies to only one target as long as they are within cast range.
 	• TEAM TARGET: Applies to the entire team (Current champion’s team if it’s healing or a BUFF effect / Opponent’s team if it’s damaging or a DEBUFF effect).
