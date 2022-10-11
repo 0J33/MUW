@@ -5,7 +5,11 @@ CSEN401 Game Project
 
 	After both players enter their name, each player gets to choose 3 champions and set one of them as a leader (You cannot choose a champion selected by another player) then you can start the game.
 	
-	The objective of the game is to knockout all the other player’s champions. The game is played on a 5x5 board. There are 5 covers placed randomly throughout the board (if a cover is between you and another champion you cannot attack that champion until you destroy the cover). You cannot move to a cell that contains another player or a cover. You can move or do normal attack in only 4 directions (UP, DOWN, RIGHT, LEFT). In the beginning of each round all champions are ordered based on speed (fastest champion starts).
+	The objective of the game is to knockout all the other player’s champions. The game is played on a 5x5 board. 
+	There are 5 covers placed randomly throughout the board (if a cover is between you and another champion you cannot attack that champion until you destroy the cover). 
+	You cannot move to a cell that contains another player or a cover. 
+	You can move or do normal attack in only 4 directions (UP, DOWN, RIGHT, LEFT). 
+	In the beginning of each round all champions are ordered based on speed (fastest champion starts).
 
 # Champion attributes:
 
@@ -35,7 +39,10 @@ CSEN401 Game Project
 
 # Abilities:
 
-	Each champion has 3 abilities which they can use throughout the game. Abilities can be damaging, healing, or crowd control (applies an effect). Abilities have different action point cost/mana cost/cool down/cast range. Abilities also have different areas of effect (SINGLE TARGET, TEAM TARGET, SELF TARGET, SURROUND, DIRECTIONAL):
+	Each champion has 3 abilities which they can use throughout the game. 
+	Abilities can be damaging, healing, or crowd control (applies an effect). 
+	Abilities have different action point cost/mana cost/cool down/cast range. 
+	Abilities also have different areas of effect (SINGLE TARGET, TEAM TARGET, SELF TARGET, SURROUND, DIRECTIONAL):
 
 	• SINGLE TARGET: Applies to only one target as long as they are within cast range.
 	• TEAM TARGET: Applies to the entire team (Current champion’s team if it’s healing or a BUFF effect / Opponent’s team if it’s damaging or a DEBUFF effect).
