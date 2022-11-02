@@ -52,4 +52,13 @@ CSEN401 Game Project
 
 # Effects:
 
-![image](https://user-images.githubusercontent.com/90639992/192110784-af56baff-d5b8-426b-a9c1-a35b05ad84c5.png)
+	• Disarm: Target cannot use normal attacks. Target gains a SINGLETARGET damaging ability called "Punch", Mana Cost: 0, Damage: 50, Cooldown: 1, Range: 1, AP Cost: 1.
+	• Dodge: Target has a 50% chance of dodging normal attacks. Increase speed by 5%.
+	• Embrace: Heals target by 20%.
+	• PowerUp: Increase Damage and Heal amounts of all damaging and healing abilities of the target by 20%.
+	• Root: Target cannot move.
+	• Shield: Block the next attack or damaging ability cast on target. Increase speed by 2%.
+	• Shock: Decrease target speed and normal attack damage by 10%. Decrease target's AP by 1.
+	• Silence: Target cannot use abilities. Increase target's AP by 2.
+	• SpeedUp: Increase speed by 15%.
+	• Stun: Target is not allowed to play their turn.
