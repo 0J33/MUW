@@ -63,7 +63,7 @@ CSEN401 Game Project
 	• SpeedUp: Increase speed by 15%.
 	• Stun: Target is not allowed to play their turn.
 	
-#Gameplay:
+# Gameplay:
 
 <img width="960" alt="img1" src="https://user-images.githubusercontent.com/90639992/200673253-8a32bd29-272b-49a6-9445-cb3ecc9b575d.png">
 <img width="960" alt="img2" src="https://user-images.githubusercontent.com/90639992/200673267-c51d18b2-9608-4afb-88f3-4cc055fd8478.png">
