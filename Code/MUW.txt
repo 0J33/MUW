@@ -1,0 +1,11 @@
+Bugs:
+
+Image size for each scale size (remove end turn pop up)
+Fix attack damage after effects are removed
+
+
+To Add:
+
+Change from window to pane
+Network play
+Computer player
