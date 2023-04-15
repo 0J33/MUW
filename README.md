@@ -4,7 +4,7 @@ CSEN401 Game Project
 
 # Installation:  
 
-    Download the `.zip` file and run the .exe or jar file.
+Download the `.zip` file and run the .exe or jar file.
 
 # Gameplay:
 
