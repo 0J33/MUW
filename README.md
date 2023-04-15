@@ -2,6 +2,10 @@
 
 CSEN401 Game Project
 
+# Installation:  
+
+    Download the `.zip` file and run the .exe or jar file.
+
 # Gameplay:
 
     After both players enter their name, each player gets to choose 3 champions and set one of them as a leader (You cannot choose a champion selected by another player) then you can start the game.
