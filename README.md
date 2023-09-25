@@ -1,6 +1,6 @@
 # Marvel - Ultimate War
 
-CSEN401 Game Project
+CSEN401 Game Development Project using Java and Swing.
 
 # Installation:  
 
