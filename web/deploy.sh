@@ -10,8 +10,14 @@
 #   SSHPASS       ssh password (consumed by `sshpass -e`); leave unset if you
 #                 use key-based auth and remove the sshpass wrapper below.
 # Optional:
-#   MUW_SUBDOMAIN public hostname for the nginx site (default muw.ojee.net)
-#   MUW_PORT      backend port (default 5003)
+#   MUW_SUBDOMAIN  hostname the API is served at (= nginx server_name).
+#                  Defaults to muw.ojee.net (single-domain setup).
+#   MUW_CLIENT_URL absolute URL of the frontend; baked into the server's
+#                  CLIENT_URL env (CORS allow-list + cookie origin).
+#                  Defaults to https://$MUW_SUBDOMAIN. Set this when the
+#                  frontend lives on a different host (e.g. Cloudflare Pages
+#                  serving muw.ojee.net while the API is on muw-api.ojee.net).
+#   MUW_PORT       backend port (default 5003)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -28,6 +34,7 @@ fi
 : "${SSHPASS:?SSHPASS not set — see deploy.local.env.example}"
 
 SUBDOMAIN="${MUW_SUBDOMAIN:-muw.ojee.net}"
+CLIENT_URL="${MUW_CLIENT_URL:-https://$SUBDOMAIN}"
 PORT="${MUW_PORT:-5003}"
 # `sshpass -e` reads the password from the SSHPASS env var so it never appears
 # on the command line or in process listings.
@@ -67,7 +74,7 @@ cat > "$STAGING/muw-server/package.json" <<EOF
 EOF
 cat > "$STAGING/muw-server/.env" <<EOF
 PORT=$PORT
-CLIENT_URL=https://$SUBDOMAIN
+CLIENT_URL=$CLIENT_URL
 SESSION_SECRET=$(openssl rand -hex 32 2>/dev/null || head -c 48 /dev/urandom | base64)
 NODE_ENV=production
 EOF

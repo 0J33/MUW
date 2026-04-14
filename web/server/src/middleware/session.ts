@@ -17,12 +17,16 @@ export function sessionMiddleware(req: Request, res: Response, next: NextFunctio
   let uid = req.cookies?.[COOKIE_NAME] as string | undefined;
   if (!uid) {
     uid = uuidv4();
+    // In prod the frontend is on cloudflare pages (e.g. muw.ojee.net) and the
+    // API on a different subdomain (e.g. muw-api.ojee.net). For the cookie
+    // to flow with cross-site fetch + websocket upgrades, it must be
+    // SameSite=None; Secure. Locally we keep SameSite=Lax over plain HTTP.
+    const crossSite = process.env.NODE_ENV === 'production';
     res.cookie(COOKIE_NAME, uid, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: crossSite ? 'none' : 'lax',
       maxAge: COOKIE_MAX_AGE_MS,
-      // secure: true enabled via trust-proxy + HTTPS in prod. Left off locally.
-      secure: process.env.NODE_ENV === 'production',
+      secure: crossSite,
     });
   }
   req.userId = uid;
