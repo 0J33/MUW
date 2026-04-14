@@ -2,6 +2,8 @@
 
 Turn-based 5×5 tactical combat. Originally a Java Swing uni project (CSEN401); now also a React + socket.io web port that runs online, hotseat, and against a heuristic AI.
 
+Live at **[muw.ojee.net](https://muw.ojee.net)**.
+
 ## What's here
 
 - [`Code/`](Code/) — original Java sources (Eclipse-style projects). The behavior-defining engine lives in [`Code/MUW (server-wip)/src/engine/Game.java`](<Code/MUW (server-wip)/src/engine/Game.java>).

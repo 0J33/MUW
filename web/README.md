@@ -2,6 +2,8 @@
 
 React + socket.io port of the Java Swing MUW uni project. Turn-based tactical combat on a 5×5 board with 1v1 online, local hotseat, and single-player vs AI modes.
 
+Live at **[muw.ojee.net](https://muw.ojee.net)** (frontend on Cloudflare Pages, API at `muw-api.ojee.net`).
+
 ## Structure
 
 - `shared/` — pure TypeScript game engine, CSV data, socket protocol types
