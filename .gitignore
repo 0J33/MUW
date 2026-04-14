@@ -1,3 +1,4 @@
+# Java IDE + build artifacts (original repo)
 Code/Marvel-M2/bin/
 Code/MUW (windows)/bin/
 Code/MUW (mac)/bin/
@@ -6,3 +7,16 @@ Code/Marvel-M2/.project
 Code/MUW (windows)/.project
 Code/MUW (mac)/.project
 Code/MUW (server-wip)/.project
+
+# Claude scratch
+.claude/
+
+# Web port (Node / Vite)
+node_modules/
+web/**/node_modules/
+web/**/dist/
+web/**/build/
+web/**/*.log
+web/**/.env
+web/deploy.local.env
+.DS_Store

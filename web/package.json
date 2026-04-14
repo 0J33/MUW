@@ -1,0 +1,14 @@
+{
+  "name": "muw-web",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Marvel Ultimate War — React online multiplayer port.",
+  "workspaces": ["shared", "server", "client"],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:server": "npm run dev -w server",
+    "dev:client": "npm run dev -w client",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test -w shared"
+  }
+}

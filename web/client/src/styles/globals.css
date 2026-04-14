@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; width: 100%; }
+/* Root font-size drives every rem-based size in the app. Clamped so micro
+   UI labels never drop below ~7px on a phone yet scale up cleanly on a 4K
+   monitor. All text-[Xpx] usages in components were replaced with rem so
+   they ride this scale. */
+html {
+  font-size: clamp(13px, 0.45vw + 11px, 18px);
+}
+body {
+  font-family: 'VT323', 'Consolas', monospace;
+  font-size: 1.05rem;
+  background:
+    radial-gradient(1400px 900px at 50% -10%, rgba(179, 0, 27, 0.35), transparent 55%),
+    radial-gradient(900px 600px at 10% 100%, rgba(242, 193, 78, 0.12), transparent 60%),
+    #0a0d13;
+  background-attachment: fixed;
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  font-smoothing: none;
+}
+
+/* Pixel art: never smooth when scaling assets */
+img, .pixelart {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Fonts. Press Start 2P for UI chrome (chunky pixel), VT323 for body text
+   (retro terminal). No non-pixel fonts anywhere in the app. */
+.font-pixel { font-family: 'Press Start 2P', monospace; letter-spacing: 0.02em; line-height: 1.35; }
+.font-vt    { font-family: 'VT323', monospace; letter-spacing: 0.03em; }
+.font-comic { font-family: 'Press Start 2P', monospace; letter-spacing: 0.04em; }
+
+/* Arcade-style chunky border. Use around panels / buttons for a consistent look. */
+.arcade-frame {
+  border: 2px solid #1b2430;
+  box-shadow:
+    inset 0 0 0 2px #0a0d13,
+    0 0 0 2px #2e3b4a,
+    0 0 0 4px #0a0d13;
+  background: linear-gradient(180deg, #1a2130, #10141c);
+}
+.arcade-frame-gold {
+  border: 2px solid #f2c14e;
+  box-shadow:
+    inset 0 0 0 2px #0a0d13,
+    0 0 0 2px #b3001b,
+    0 0 0 4px #0a0d13;
+  background: linear-gradient(180deg, #2a1620, #150a10);
+}
+
+/* Picked-champion frame — bright gold outer halo so it's unmistakable in
+   the roster grid. Stacks correctly over the base arcade-frame box-shadow. */
+.arcade-frame-picked {
+  border-color: #f2c14e !important;
+  box-shadow:
+    inset 0 0 0 2px #0a0d13,
+    0 0 0 2px #f2c14e,
+    0 0 0 5px #0a0d13,
+    0 0 12px rgba(242, 193, 78, 0.55) !important;
+  background: linear-gradient(180deg, #2a2010, #15110a) !important;
+}
+.arcade-frame-leader {
+  border-color: #f2c14e !important;
+  box-shadow:
+    inset 0 0 0 2px #0a0d13,
+    0 0 0 2px #b3001b,
+    0 0 0 5px #f2c14e,
+    0 0 16px rgba(242, 193, 78, 0.7) !important;
+  background: linear-gradient(180deg, #2a1620, #150a10) !important;
+}
+
+/* All click sounds — every .pixel-btn click plays the select sfx. We bind via
+   a global listener in main.tsx rather than wrapping every component. */
+
+/* Buttons — chunky, flat, with a 3px solid edge like old arcade UI. */
+.pixel-btn {
+  position: relative;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 10px 16px;
+  border: 0;
+  color: #fff;
+  background: #b3001b;
+  box-shadow:
+    0 3px 0 0 #6a0010,
+    inset 0 -2px 0 rgba(0,0,0,0.25),
+    inset 0 2px 0 rgba(255,255,255,0.15);
+  transition: transform 70ms, box-shadow 70ms;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.pixel-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 0 0 #6a0010, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.2); }
+.pixel-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 0 #6a0010, inset 0 -2px 0 rgba(0,0,0,0.25); }
+.pixel-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.pixel-btn-gold { background: #f2c14e; color: #0a0d13; box-shadow: 0 3px 0 0 #8a6a10, inset 0 -2px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.35); }
+.pixel-btn-gold:hover:not(:disabled) { box-shadow: 0 4px 0 0 #8a6a10, inset 0 -2px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.4); }
+.pixel-btn-gold:active:not(:disabled) { box-shadow: 0 1px 0 0 #8a6a10, inset 0 -2px 0 rgba(0,0,0,0.2); }
+
+.pixel-btn-steel { background: #2e3b4a; box-shadow: 0 3px 0 0 #131a24, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.1); }
+.pixel-btn-steel:hover:not(:disabled) { box-shadow: 0 4px 0 0 #131a24, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.15); }
+.pixel-btn-steel:active:not(:disabled) { box-shadow: 0 1px 0 0 #131a24, inset 0 -2px 0 rgba(0,0,0,0.25); }
+
+.pixel-btn-emerald { background: #0f766e; box-shadow: 0 3px 0 0 #064e47, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.15); }
+.pixel-btn-emerald:hover:not(:disabled) { box-shadow: 0 4px 0 0 #064e47, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.2); }
+
+.pixel-btn-indigo { background: #4338ca; box-shadow: 0 3px 0 0 #2a2299, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.15); }
+.pixel-btn-indigo:hover:not(:disabled) { box-shadow: 0 4px 0 0 #2a2299, inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.2); }
+
+.hp-bar-fill {
+  background: linear-gradient(180deg, #ff5e5e 0%, #ff3b3b 50%, #b3001b 100%);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Board cells — chunky borders, no rounding, pixel-style portraits */
+.cell {
+  aspect-ratio: 1 / 1;
+  background: #10141c;
+  border: 2px solid #2e3b4a;
+  box-shadow: inset 0 0 0 2px #0a0d13;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.cell.active-turn {
+  border-color: #f2c14e;
+  box-shadow: inset 0 0 0 2px #0a0d13, 0 0 14px rgba(242,193,78,0.55);
+  animation: cellPulse 1.6s ease-in-out infinite;
+}
+@keyframes cellPulse {
+  0%, 100% { box-shadow: inset 0 0 0 2px #0a0d13, 0 0 10px rgba(242,193,78,0.45); }
+  50%      { box-shadow: inset 0 0 0 2px #0a0d13, 0 0 18px rgba(242,193,78,0.75); }
+}
+
+/* Per-event animation overlays. The Match view stamps these on a wrapper
+   above a cell to play once and remove. */
+.fx-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.fx-damage {
+  background: radial-gradient(circle at 50% 50%, rgba(255,80,80,0.55), transparent 65%);
+  animation: fxDamage 0.7s ease-out forwards;
+}
+.fx-heal {
+  background: radial-gradient(circle at 50% 50%, rgba(80,255,160,0.5), transparent 65%);
+  animation: fxHeal 0.9s ease-out forwards;
+}
+.fx-cc {
+  background: radial-gradient(circle at 50% 50%, rgba(150,120,255,0.45), transparent 65%);
+  border: 2px solid rgba(150,120,255,0.85);
+  animation: fxCc 0.9s ease-out forwards;
+}
+.fx-shake {
+  animation: fxShake 0.4s ease-in-out;
+}
+@keyframes fxDamage {
+  0%   { opacity: 0; transform: scale(0.6); }
+  30%  { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+@keyframes fxHeal {
+  0%   { opacity: 0; transform: scale(0.7) translateY(8px); }
+  40%  { opacity: 1; transform: scale(1.1) translateY(-4px); }
+  100% { opacity: 0; transform: scale(1.2) translateY(-16px); }
+}
+@keyframes fxCc {
+  0%   { opacity: 0; transform: scale(0.5) rotate(-15deg); }
+  30%  { opacity: 1; transform: scale(1.1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(1.3) rotate(15deg); }
+}
+@keyframes fxShake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 1px); }
+  40% { transform: translate(3px, -2px); }
+  60% { transform: translate(-2px, 2px); }
+  80% { transform: translate(2px, -1px); }
+}
+.cell.valid-target {
+  border-color: #b3001b;
+  box-shadow: inset 0 0 0 2px #0a0d13, 0 0 14px rgba(179,0,27,0.65);
+  cursor: crosshair;
+}
+.cell.cover {
+  background:
+    repeating-linear-gradient(45deg, #2e3b4a 0, #2e3b4a 4px, #1b2430 4px, #1b2430 8px);
+}
+
+/* Thin scrollbar in panels so it's barely visible */
+.thin-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #2e3b4a; }
+.thin-scroll::-webkit-scrollbar-track { background: transparent; }
+
+kbd {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  background: #10141c;
+  border: 1px solid #2e3b4a;
+  box-shadow: inset 0 -1px 0 #0a0d13;
+  padding: 2px 4px;
+  color: #f2c14e;
+}
+
+/* Direction picker — floating arrow buttons that ring the active champion
+   while a move/attack/directional intent is queued. Click for mouse-only
+   players; keyboard arrows still work for everyone else. */
+.dir-btn {
+  width: clamp(28px, 4vw, 44px);
+  height: clamp(28px, 4vw, 44px);
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(12px, 1.4vw, 18px);
+  color: #0a0d13;
+  background: #f2c14e;
+  border: 0;
+  box-shadow: 0 3px 0 0 #8a6a10, inset 0 -2px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 70ms;
+}
+.dir-btn:hover { transform: translate(-50%, -52%); filter: brightness(1.1); }
+.dir-btn:active { transform: translate(-50%, -48%); }
+
+.dir-cancel {
+  width: clamp(20px, 2.6vw, 28px);
+  height: clamp(20px, 2.6vw, 28px);
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(10px, 1.2vw, 14px);
+  background: #5a0a0a;
+  color: #fff;
+  border: 0;
+  box-shadow: 0 2px 0 0 #2a0505, inset 0 -1px 0 rgba(0,0,0,0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dir-cancel:hover { filter: brightness(1.2); }
