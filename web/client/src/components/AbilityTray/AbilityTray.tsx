@@ -73,10 +73,8 @@ export function AbilityTray(props: AbilityTrayProps) {
           />
         );
       })}
+      {c && c.abilities.length === 0 && null}
       {leaderPower && (() => {
-        // Short status line that's guaranteed to fit on one line. The full
-        // description lives in the right-sidebar Leader Power panel and the
-        // hover tooltip — no point cramming it into the button itself.
         const status = leaderAbilityUsed
           ? 'Already used'
           : !isLeaderTurn
@@ -85,7 +83,7 @@ export function AbilityTray(props: AbilityTrayProps) {
         return (
           <button
             className="pixel-btn pixel-btn-gold flex flex-col items-start gap-0.5"
-            style={{ paddingTop: 6, paddingBottom: 6, width: 200, height: 52 }}
+            style={{ paddingTop: 6, paddingBottom: 6, width: 'clamp(150px, 35vw, 200px)', height: 52 }}
             onClick={props.onLeaderAbility}
             disabled={!yourTurn || !isLeaderTurn || leaderAbilityUsed}
             title={`${leaderPower.name}: ${leaderPower.description} (keyboard: L)`}
@@ -130,7 +128,7 @@ function AbilityButton({ a, hotkey, disabled, onClick, championMana, championAp 
       <button
         ref={btnRef}
         className={`pixel-btn ${color} flex flex-col items-start gap-0.5`}
-        style={{ paddingTop: 6, paddingBottom: 6, minWidth: 170 }}
+        style={{ paddingTop: 6, paddingBottom: 6, minWidth: 'clamp(120px, 28vw, 170px)' }}
         onClick={onClick}
         disabled={disabled || cantAfford}
         onPointerEnter={(ev) => { setHoverRect(ev.currentTarget.getBoundingClientRect()); }}

@@ -6,7 +6,7 @@ export function ChatBox({ messages, onSend }: { messages: ChatMessage[]; onSend:
   const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight }); }, [messages.length]);
   return (
-    <div className="arcade-frame p-3 flex flex-col h-64">
+    <div className="arcade-frame p-3 flex flex-col h-48 md:h-64">
       <div className="font-pixel text-[0.7rem] text-muwGold mb-1">Chat</div>
       <div ref={scrollRef} className="flex-1 overflow-y-auto thin-scroll font-vt text-sm space-y-0.5 pr-2">
         {messages.map(m => (

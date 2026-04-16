@@ -78,10 +78,10 @@ export function TeamSelect(props: TeamSelectProps) {
         </span>
       </div>
 
-      <div className="grid md:grid-cols-[minmax(0,1fr)_300px] lg:grid-cols-[minmax(0,1fr)_340px] gap-4 items-start">
-        {/* Auto-fill grid; tiles are wide enough for "Quicksilver" to sit on
-            a single line of the pixel font without wrapping. */}
-        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(168px, 1fr))' }}>
+      <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_300px] lg:grid-cols-[minmax(0,1fr)_340px] gap-4 items-start">
+        {/* Auto-fill grid; tiles aim for 168px on desktop but shrink to ~45 vw
+            on narrow screens so phones still get two columns. */}
+        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(168px, 45vw), 1fr))' }}>
           {roster.map(c => {
             const taken = pickedByOpponent.has(c.name);
             const mine = pickedByMe.has(c.name);

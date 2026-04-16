@@ -34,7 +34,7 @@ export function Lobby() {
   const canReady = (myPlayer?.picks.length ?? 0) === TEAM_SIZE && myPlayer?.leader;
 
   return (
-    <div className="h-screen w-screen flex flex-col p-6 gap-4 overflow-hidden">
+    <div className="h-svh w-screen flex flex-col p-3 sm:p-4 md:p-6 gap-3 sm:gap-4 overflow-hidden">
       <header className="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <h1 className="font-pixel text-base text-muwGold">Room <span className="bg-muwInk arcade-frame px-2 py-0.5 font-pixel text-base ml-1">{code}</span></h1>

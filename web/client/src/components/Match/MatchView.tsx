@@ -329,18 +329,18 @@ export function MatchView({
   const floaterRow = (engineX: number) => myIndex === 0 ? state.board.length - 1 - engineX : engineX;
 
   return (
-    <div className="h-svh w-screen flex flex-col p-3 md:p-4 gap-2 overflow-hidden">
-      <header className="flex items-center justify-between gap-3 flex-wrap shrink-0">
-        <div className="flex items-center gap-3 min-w-0">
-          <h1 className="font-pixel text-sm md:text-base text-muwGold drop-shadow-[0_2px_0_#b3001b] truncate">Marvel Ultimate War</h1>
-          <span className="font-pixel text-[0.7rem] text-gray-400">Room {state.code}</span>
+    <div className="h-svh w-screen flex flex-col p-2 sm:p-3 md:p-4 gap-2 overflow-hidden">
+      <header className="flex items-center justify-between gap-2 sm:gap-3 flex-wrap shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <h1 className="font-pixel text-[0.7rem] sm:text-sm md:text-base text-muwGold drop-shadow-[0_2px_0_#b3001b] truncate">Marvel Ultimate War</h1>
+          <span className="font-pixel text-[0.55rem] sm:text-[0.7rem] text-gray-400 shrink-0">Room {state.code}</span>
         </div>
-        <div className="font-pixel text-[0.78rem] text-center flex-1 min-w-[180px]">
+        <div className="font-pixel text-[0.62rem] sm:text-[0.78rem] text-center flex-1 min-w-[140px] order-3 sm:order-none w-full sm:w-auto">
           {isMyTurn
             ? <span className="text-muwGold">Your Turn — {currentChamp?.name}</span>
             : <span className="text-gray-400">Opponent — {currentChamp?.name}</span>}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {headerExtra}
           <SettingsCog />
         </div>
@@ -367,7 +367,7 @@ export function MatchView({
         </aside>
 
         <div className="flex-1 relative flex items-center justify-center min-w-0 min-h-0">
-          <div className="relative aspect-square" style={{ width: 'min(100%, calc(100svh - 280px))', maxHeight: '100%' }}>
+          <div className="relative aspect-square" style={{ width: 'min(100%, calc(100svh - 260px))', maxHeight: '100%' }}>
             <Board state={state} viewerIndex={myIndex} selectableCells={selectable} onCellClick={onCellClick} directionPicker={pickerProp} leaderIds={leaderIds} />
             {/* Per-cell impact / heal / crowd-control auras. Positioned with the
                 same percentage math as floaters; CSS keyframes carry the actual
@@ -464,17 +464,17 @@ function PlayerBar({ seat, champions, forIndex, isCurrent, leaderUsed, label }: 
   if (!seat) return null;
   const team = champions.filter(c => c.ownerIndex === forIndex);
   return (
-    <div className={`arcade-frame ${isCurrent ? 'arcade-frame-gold' : ''} px-2 py-1 flex items-center gap-2 shrink-0`}>
-      <div className="font-pixel text-[0.78rem] text-muwGold truncate max-w-[120px]">{seat.username}</div>
-      <div className="font-pixel text-[0.62rem] text-gray-400">{label}</div>
-      <div className="flex gap-1.5 flex-wrap">
+    <div className={`arcade-frame ${isCurrent ? 'arcade-frame-gold' : ''} px-2 py-1 flex items-center gap-2 shrink-0 overflow-x-auto thin-scroll`}>
+      <div className="font-pixel text-[0.78rem] text-muwGold truncate max-w-[120px] shrink-0">{seat.username}</div>
+      <div className="font-pixel text-[0.62rem] text-gray-400 hidden sm:block shrink-0">{label}</div>
+      <div className="flex gap-1.5 flex-nowrap sm:flex-wrap">
         {team.map(c => {
           const pct = Math.max(0, Math.min(100, (c.currentHP / c.maxHP) * 100));
           const isLeader = c.name === seat.leader;
           return (
             <div
               key={c.id}
-              className={`relative w-44 bg-black/40 border ${isLeader ? 'border-muwGold' : 'border-white/10'} px-1.5 py-1`}
+              className={`relative shrink-0 w-36 sm:w-44 bg-black/40 border ${isLeader ? 'border-muwGold' : 'border-white/10'} px-1.5 py-1`}
               title={`${c.name}${isLeader ? ' (Leader)' : ''} — ${c.currentHP}/${c.maxHP} health`}
             >
               <div className="flex items-baseline justify-between gap-1 font-pixel text-[0.62rem]">
@@ -483,11 +483,9 @@ function PlayerBar({ seat, champions, forIndex, isCurrent, leaderUsed, label }: 
                   {c.name}
                 </span>
               </div>
-              {/* Health bar with the numeric values overlaid in pixel font.
-                  Two layers — colored fill clipped behind, full-width text on top. */}
               <div className="relative h-3.5 bg-black/80 mt-1 overflow-hidden">
                 <div className="absolute inset-y-0 left-0 hp-bar-fill" style={{ width: `${pct}%` }} />
-                <div className="absolute inset-0 flex items-center justify-center font-pixel text-[0.55rem] text-white drop-shadow-[1px_1px_0_#000] mix-blend-normal">
+                <div className="absolute inset-0 flex items-center justify-center font-pixel text-[0.55rem] text-white drop-shadow-[1px_1px_0_#000]">
                   {c.currentHP} / {c.maxHP}
                 </div>
               </div>
@@ -496,7 +494,7 @@ function PlayerBar({ seat, champions, forIndex, isCurrent, leaderUsed, label }: 
         })}
       </div>
       <div className="flex-1" />
-      <div className="font-pixel text-[0.62rem] text-gray-400">Leader Power: {leaderUsed ? 'Used' : 'Ready'}</div>
+      <div className="font-pixel text-[0.62rem] text-gray-400 hidden sm:block shrink-0">Leader Power: {leaderUsed ? 'Used' : 'Ready'}</div>
     </div>
   );
 }

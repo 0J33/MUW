@@ -100,24 +100,34 @@ export function Board({ state, viewerIndex, selectableCells, onCellClick, direct
 // Floating champion-info card that anchors to the hovered cell using fixed
 // positioning. We try to keep the card vertically near the cell, and only
 // push it up (or down) when it would otherwise spill past the viewport edge.
-// No internal scrolling — the hover variant of ChampionCard uses a small
-// portrait + dense layout so the full info fits in roughly 320 px.
+// On narrow screens (phones) the card doesn't fit beside the board at all, so
+// we pin it to the top of the viewport at full width instead.
 function HoverCard({ champ, rect }: { champ: ChampionInstance; rect: DOMRect }) {
   const CARD_W = 256;
-  const CARD_H_EST = 340; // header + hp bar + 6 stats + 3 abilities + ~2 effects
+  const CARD_H_EST = 340;
   const MARGIN = 12;
   const vw = typeof window === 'undefined' ? 1024 : window.innerWidth;
   const vh = typeof window === 'undefined' ? 768 : window.innerHeight;
 
-  // Horizontal: prefer placing to the right of the cell; flip left if needed;
-  // clamp to left margin if even that doesn't fit (very narrow viewport).
+  // Narrow viewport: not enough room to place the card next to the cell. Pin
+  // it at the top of the screen, full width (minus margins).
+  if (vw < 640) {
+    return (
+      <div
+        className="pointer-events-none fixed z-30"
+        style={{ left: MARGIN, right: MARGIN, top: MARGIN, width: 'auto' }}
+      >
+        <div style={{ maxWidth: vw - MARGIN * 2, margin: '0 auto' }}>
+          <ChampionCard champ={champ} hover />
+        </div>
+      </div>
+    );
+  }
+
   let left = rect.right + 12;
   if (left + CARD_W + MARGIN > vw) left = rect.left - CARD_W - 12;
   if (left < MARGIN) left = MARGIN;
 
-  // Vertical: try to center the card on the cell. If centered position would
-  // overflow the bottom, pin the bottom of the card to the viewport. If it
-  // would overflow the top, pin the top. Otherwise leave it next to the cell.
   const cellMidY = rect.top + rect.height / 2;
   let top = cellMidY - CARD_H_EST / 2;
   if (top + CARD_H_EST > vh - MARGIN) top = vh - MARGIN - CARD_H_EST;
