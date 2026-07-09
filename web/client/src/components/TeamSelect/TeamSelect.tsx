@@ -74,7 +74,7 @@ export function TeamSelect(props: TeamSelectProps) {
       <div className="flex items-baseline justify-between flex-wrap gap-2">
         <h2 className="font-pixel text-sm text-muwGold">Pick {TEAM_SIZE} Champions</h2>
         <span className="font-pixel text-[0.62rem] text-gray-400">
-          Click to pick · Click again to set as leader · Right-click to remove
+          Tap to pick · Tap again to set as leader · Tap ✕ to remove
         </span>
       </div>
 
@@ -87,22 +87,31 @@ export function TeamSelect(props: TeamSelectProps) {
             const mine = pickedByMe.has(c.name);
             const isLeader = props.myLeader === c.name;
             const disabled = props.locked || taken || (!mine && pickedByMe.size >= TEAM_SIZE);
+            const interactive = !(disabled && !mine);
+            const activate = () => {
+              if (props.locked) return;
+              if (mine) props.onSetLeader(c.name);
+              else if (!taken && pickedByMe.size < TEAM_SIZE) props.onPick(c.name);
+            };
             return (
-              <button
+              // Tile is a div (not a button) so we can nest a real remove
+              // button inside it — nesting <button> in <button> is invalid and
+              // breaks tap handling on touch devices.
+              <div
                 key={c.name}
+                role="button"
+                tabIndex={interactive ? 0 : -1}
+                aria-disabled={!interactive}
+                aria-pressed={mine}
                 className={`
-                  relative arcade-frame p-3 transition group
+                  relative arcade-frame p-3 transition group focus:outline-none focus-visible:ring-2 focus-visible:ring-muwGold
                   ${isLeader ? 'arcade-frame-leader' : mine ? 'arcade-frame-picked' : ''}
-                  ${disabled && !mine ? 'opacity-40 cursor-not-allowed' : 'hover:-translate-y-0.5 hover:brightness-110'}
+                  ${!interactive ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:-translate-y-0.5 hover:brightness-110'}
                 `}
-                onClick={() => {
-                  if (props.locked) return;
-                  if (mine) props.onSetLeader(c.name);
-                  else if (!taken && pickedByMe.size < TEAM_SIZE) props.onPick(c.name);
-                }}
+                onClick={() => { if (interactive) activate(); }}
+                onKeyDown={(e) => { if (interactive && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); activate(); } }}
                 onContextMenu={(e) => { e.preventDefault(); if (mine) props.onUnpick(c.name); }}
                 onPointerEnter={() => { setHover(c); }}
-                disabled={disabled && !mine}
                 title={c.name}
               >
                 <div className="aspect-square w-full bg-black/50 overflow-hidden">
@@ -115,9 +124,22 @@ export function TeamSelect(props: TeamSelectProps) {
                   </div>
                 )}
                 {isLeader && (
-                  <div className="absolute top-1.5 left-1.5 right-1.5 bg-muwGold text-muwInk font-pixel text-[0.62rem] font-bold px-1.5 py-0.5 text-center">
+                  <div className="absolute top-1.5 left-1.5 bg-muwGold text-muwInk font-pixel text-[0.62rem] font-bold px-1.5 py-0.5 text-center">
                     Leader
                   </div>
+                )}
+                {/* Remove control — works with tap (touch) and click, so phones
+                    aren't stuck with their first three picks. */}
+                {mine && !props.locked && (
+                  <button
+                    type="button"
+                    aria-label={`Remove ${c.name}`}
+                    className="absolute top-1.5 right-1.5 z-10 w-7 h-7 flex items-center justify-center bg-red-800 hover:bg-red-700 text-white border border-black/40 font-pixel text-[0.7rem] leading-none shadow-[0_2px_0_0_#2a0505]"
+                    onClick={(e) => { e.stopPropagation(); props.onUnpick(c.name); }}
+                    title={`Remove ${c.name}`}
+                  >
+                    ✕
+                  </button>
                 )}
                 {taken && <div className="absolute inset-3 bg-red-900/85 flex items-center justify-center font-pixel text-[0.7rem]">Taken</div>}
                 {/* Allow long single-word names ("Quicksilver") to wrap mid-word
@@ -130,7 +152,7 @@ export function TeamSelect(props: TeamSelectProps) {
                 >
                   {c.name}
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>

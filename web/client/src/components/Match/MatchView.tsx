@@ -69,18 +69,15 @@ export function MatchView({
   } | null>(null);
   const [log, setLog] = useState<LogEntry[]>([]);
   const logIdRef = useRef(0);
-  const logScrollRef = useRef<HTMLDivElement | null>(null);
   function pushLog(text: string, tone: LogEntry['tone'] = 'info') {
     logIdRef.current += 1;
     setLog(prev => [...prev, { id: logIdRef.current, text, tone }].slice(-50));
   }
-  // Whenever the log grows, glue the scroll to the bottom so the newest
-  // entry is always visible.
-  useEffect(() => {
-    const el = logScrollRef.current;
-    if (!el) return;
-    el.scrollTop = el.scrollHeight;
-  }, [log.length]);
+
+  // Mobile info drawer — on phones/tablets the Turn Order, Action Log and
+  // Active Champion side panels are hidden for space, so surface them all in a
+  // bottom sheet reachable from the header.
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     // Build current snapshot.
@@ -342,6 +339,13 @@ export function MatchView({
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {headerExtra}
+          {/* Mobile-only: opens the info sheet (turn order / log / active champ). */}
+          <button
+            className="lg:hidden pixel-btn pixel-btn-steel !px-2.5 !py-1.5 !text-[0.6rem]"
+            onClick={() => { setDrawerOpen(true); }}
+            aria-label="Open turn order, action log and champion info"
+            title="Turn order · log · champion info"
+          >Info</button>
           <SettingsCog />
         </div>
       </header>
@@ -353,17 +357,7 @@ export function MatchView({
           <div className="font-pixel text-[0.7rem] text-gray-400">Turn Order</div>
           <TurnTracker turnOrder={state.turnOrder} champions={state.champions} currentId={state.currentChampionId} leaderIds={leaderIds} />
           <div className="font-pixel text-[0.7rem] text-gray-400 mt-1">Action Log</div>
-          <div ref={logScrollRef} className="arcade-frame p-2 flex-1 min-h-0 overflow-y-auto thin-scroll text-[0.78rem] font-vt leading-tight space-y-0.5">
-            {log.length === 0 && <div className="text-gray-500">Waiting for the first move…</div>}
-            {log.map(e => (
-              <div key={e.id} className={
-                e.tone === 'damage' ? 'text-red-300' :
-                e.tone === 'heal' ? 'text-emerald-300' :
-                e.tone === 'effect' ? 'text-indigo-300' :
-                e.tone === 'turn' ? 'text-muwGold' : 'text-gray-200'
-              }>{e.text}</div>
-            ))}
-          </div>
+          <LogList log={log} />
         </aside>
 
         <div className="flex-1 relative flex items-center justify-center min-w-0 min-h-0">
@@ -449,6 +443,85 @@ export function MatchView({
         onEndTurn={() => { actions.endTurn(); play('select'); }}
         onSurrender={actions.surrender}
       />
+
+      {/* Mobile info sheet — parity for the desktop side panels. */}
+      <AnimatePresence>
+        {drawerOpen && (
+          <motion.div
+            className="fixed inset-0 z-40 lg:hidden flex flex-col justify-end"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          >
+            <div className="absolute inset-0 bg-black/70" onClick={() => { setDrawerOpen(false); }} />
+            <motion.div
+              className="relative w-full max-h-[85svh] flex flex-col arcade-frame bg-muwInk"
+              initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 26, stiffness: 260 }}
+            >
+              <div className="flex items-center justify-between px-3 py-2 border-b border-white/10 shrink-0">
+                <span className="font-pixel text-[0.7rem] text-muwGold">Match Info</span>
+                <button className="pixel-btn pixel-btn-steel !px-2.5 !py-1.5 !text-[0.6rem]" onClick={() => { setDrawerOpen(false); }} aria-label="Close">Close</button>
+              </div>
+              <div className="flex-1 min-h-0 overflow-y-auto thin-scroll p-3 space-y-3">
+                {currentChamp && (
+                  <div>
+                    <div className="font-pixel text-[0.62rem] text-gray-400 mb-1">
+                      {isMyTurn ? 'Your Champion' : 'Active Champion'}
+                    </div>
+                    <ChampionCard champ={currentChamp} hover />
+                  </div>
+                )}
+                <div>
+                  <div className="font-pixel text-[0.62rem] text-muwGold mb-1">Your Leader Power</div>
+                  <div className="arcade-frame p-2 space-y-1">
+                    {myLeaderChamp ? (
+                      <>
+                        <div className="font-pixel text-[0.62rem] text-white flex items-baseline justify-between">
+                          <span>{LEADER_POWERS[myLeaderChamp.kind].name}</span>
+                          <span className="text-gray-400">{leaderUsed ? 'Used' : 'Ready'}</span>
+                        </div>
+                        <div className="font-vt text-[0.85rem] text-gray-300 leading-tight">{LEADER_POWERS[myLeaderChamp.kind].description}</div>
+                      </>
+                    ) : (
+                      <div className="font-pixel text-[0.62rem] text-gray-500">Your leader has fallen.</div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div className="font-pixel text-[0.62rem] text-gray-400 mb-1">Turn Order</div>
+                  <TurnTracker turnOrder={state.turnOrder} champions={state.champions} currentId={state.currentChampionId} leaderIds={leaderIds} />
+                </div>
+                <div className="flex flex-col min-h-[8rem]">
+                  <div className="font-pixel text-[0.62rem] text-gray-400 mb-1">Action Log</div>
+                  <LogList log={log} className="h-40" />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// Scrolling action-log list, glued to the newest entry. Shared by the desktop
+// sidebar and the mobile info sheet.
+function LogList({ log, className }: { log: LogEntry[]; className?: string }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [log.length]);
+  return (
+    <div ref={ref} className={`arcade-frame p-2 overflow-y-auto thin-scroll text-[0.78rem] font-vt leading-tight space-y-0.5 ${className ?? 'flex-1 min-h-0'}`}>
+      {log.length === 0 && <div className="text-gray-500">Waiting for the first move…</div>}
+      {log.map(e => (
+        <div key={e.id} className={
+          e.tone === 'damage' ? 'text-red-300' :
+          e.tone === 'heal' ? 'text-emerald-300' :
+          e.tone === 'effect' ? 'text-indigo-300' :
+          e.tone === 'turn' ? 'text-muwGold' : 'text-gray-200'
+        }>{e.text}</div>
+      ))}
     </div>
   );
 }
